@@ -1,0 +1,111 @@
+import { useState } from "react";
+import Footer from "../components/Footer";
+import { askNova } from "../api/AskNova";
+
+export default function Glossary() {
+  const [question, setQuestion] = useState("");
+  const [answer, setAnswer] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [showAnswer, setShowAnswer] = useState(false);
+  const [isFiveMode, setIsFiveMode] = useState(false);
+
+  const handleAskNova = async (fiveMode = false) => {
+    if (!question.trim()) return;
+    setLoading(true);
+    setShowAnswer(false);
+    setIsFiveMode(fiveMode);
+    const query = fiveMode ? `${question} Explain like I am 5.` : question;
+    const result = await askNova(query);
+    setAnswer(result);
+    setLoading(false);
+    setShowAnswer(true);
+  };
+
+  return (
+    <div className="min-h-screen text-white relative bg-[url('/images/nova-command-center.jpg')] bg-cover bg-fixed bg-center">
+      <div className="absolute inset-0 bg-black/60 z-0" />
+
+      <header className="fixed top-0 left-0 w-full z-20 bg-black/80 p-4 shadow backdrop-blur-md border-b border-yellow-400">
+        <div className="flex flex-col items-center space-y-2">
+          <h1 className="text-yellow-400 font-bold text-2xl text-center">
+            Nova's Trading Company
+          </h1>
+          <nav className="space-x-6">
+            <a href="/" className="hover:text-yellow-300">Home</a>
+            <a href="/chat" className="hover:text-yellow-300">Chat</a>
+            <a href="/glossary" className="hover:text-yellow-300 font-bold">Glossary</a>
+            <a href="/examples" className="hover:text-yellow-300">Trade Examples</a>
+            <a href="/contact" className="hover:text-yellow-300">Contact</a>
+            <a href="/about-nova" className="hover:text-yellow-300">About Nova</a>
+            <a href="/guestbook" className="hover:text-yellow-300">Guestbook</a>
+            <a href="/disclaimer" className="hover:text-yellow-300">Disclaimer</a>
+          </nav>
+        </div>
+      </header>
+
+      <main className="relative z-10 pt-36 max-w-3xl mx-auto px-6 pb-20">
+        <h2 className="text-yellow-400 text-4xl font-bold mb-2 text-center">
+          Nova’s Options Glossary
+        </h2>
+        <p className="text-gray-300 text-center mb-8">
+          Ask Nova to explain any trading term — in simple or advanced language.
+        </p>
+
+        {/* 🔥 Suggested Questions Section */}
+        <div className="bg-black/40 p-4 rounded-lg shadow-lg mb-6">
+          <h3 className="text-lg font-bold text-yellow-300 mb-3">
+            Not sure what to ask? Try one of these:
+          </h3>
+          <div className="grid grid-cols-2 gap-3">
+            <button
+              className="bg-yellow-500 text-black px-4 py-2 rounded hover:bg-yellow-400"
+              onClick={() => setQuestion("What is a debit spread?")}
+            >
+              What is a debit spread?
+            </button>
+            <button
+              className="bg-yellow-500 text-black px-4 py-2 rounded hover:bg-yellow-400"
+              onClick={() => setQuestion("How does implied volatility affect options?")}
+            >
+              How does implied volatility affect options?
+            </button>
+            <button
+              className="bg-yellow-500 text-black px-4 py-2 rounded hover:bg-yellow-400"
+              onClick={() => setQuestion("Explain a covered call in simple terms.")}
+            >
+              Explain a covered call in simple terms.
+            </button>
+            <button
+              className="bg-yellow-500 text-black px-4 py-2 rounded hover:bg-yellow-400"
+              onClick={() => setQuestion("How can Nova help refine my trading strategy?")}
+            >
+              How can Nova help refine my trading strategy?
+            </button>
+          </div>
+        </div>
+
+        <div className="bg-slate-900 p-6 rounded-xl shadow-xl mb-6">
+          <label className="block text-lg font-semibold mb-2">Ask Nova a Term or Concept</label>
+          <input
+            type="text"
+            placeholder="Ex: What is a debit spread?"
+            value={question}
+            onChange={(e) => setQuestion(e.target.value)}
+            className="w-full p-3 text-black rounded-lg mb-4"
+          />
+          <div className="flex justify-center space-x-4">
+            <button
+              onClick={() => handleAskNova(false)}
+              disabled={loading}
+              className="bg-teal-400 text-black font-bold px-6 py-2 rounded-xl hover:bg-teal-300 transition-all"
+            >
+              {loading && !isFiveMode ? "Thinking..." : "Ask Nova"}
+            </button>
+          </div>
+        </div>
+      </main>
+
+      <Footer />
+    </div>
+  );
+}
