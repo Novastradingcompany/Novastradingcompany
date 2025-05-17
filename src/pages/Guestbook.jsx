@@ -1,19 +1,26 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom"; // ✅ Import useNavigate
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "../api/Firebase";
 import Footer from "../components/Footer";
 
 export default function Guestbook() {
   const [submitting, setSubmitting] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+  const navigate = useNavigate(); // ✅ UseNavigate inside function component
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmitting(true);
+    setSuccessMessage("");
+
+
 
     const name = e.target.name.value;
     const email = e.target.email.value;
     const message = e.target.message.value;
+    
+
 
     try {
       await addDoc(collection(db, "guestbook"), {
@@ -23,12 +30,12 @@ export default function Guestbook() {
         createdAt: serverTimestamp(),
       });
 
-      // Redirect to thank-you page
-      window.location.href = "/thankyou";
+      // 🚀 Use navigate instead of window.location.href
+      navigate("/thankyou");
       return;
     } catch (error) {
       console.error("Error saving message:", error);
-      alert("There was a problem submitting your message.");
+     {/*} alert("There was a problem submitting your message.");*/}
     }
 
     setSubmitting(false);
@@ -62,6 +69,12 @@ export default function Guestbook() {
         <p className="text-gray-300 mb-6 text-center">
           Leave a comment, question, or just say hello! Your feedback keeps Nova sharp.
         </p>
+
+        {successMessage && (
+          <div className="bg-green-200 text-green-800 p-4 rounded text-center font-semibold mb-4 shadow">
+            {successMessage}
+          </div>
+        )}
 
         <form onSubmit={handleSubmit} className="bg-white bg-opacity-90 p-6 rounded-xl shadow-xl text-black space-y-4">
           <input
@@ -99,4 +112,3 @@ export default function Guestbook() {
     </div>
   );
 }
-
