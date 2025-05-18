@@ -6,7 +6,7 @@ import Footer from "../components/Footer";
 
 const ADMIN_EMAIL = "novastradingcompany@gmail.com";
 
-export default function MessagesPage() {
+export default function Messages() {
   const [user, setUser] = useState(null);
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(true);
