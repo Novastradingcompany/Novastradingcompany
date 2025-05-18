@@ -12,9 +12,9 @@ import AboutNova      from "./pages/AboutNova";
 import Guestbook      from "./pages/Guestbook";
 import Disclaimer     from "./pages/Disclaimer";
 import Comingsoon     from "./pages/Comingsoon";
-import MessagesPage   from "./pages/MessagesPage";
+import Messages       from "./pages/Messages";
 import ThankYou       from "./pages/ThankYou";
-import Messagespage from "./pages/Messages";
+import Messagespage   from "./pages/Messages";
 
 
 export default function App() {
@@ -33,7 +33,7 @@ export default function App() {
         <Route path="/guestbook"       element={<Guestbook      />} />
         <Route path="/disclaimer"      element={<Disclaimer     />} />
         <Route path="/Comingsoon"      element={<Comingsoon     />} />
-        <Route path="/messages"        element={<MessagesPage   />} />
+        <Route path="/messages"        element={<Messages       />} />
         <Route path="/thankyou"        element={<ThankYou       />} />
         <Route path="/MessagesPage"    element={<Messagespage   />} />
       </Routes>
